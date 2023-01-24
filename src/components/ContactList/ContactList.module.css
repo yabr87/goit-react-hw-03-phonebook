@@ -1,0 +1,34 @@
+.contactList {
+  padding: 10px;
+  width: 380px;
+}
+.contactItem {
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  border-bottom: 1px dashed silver;
+  padding: 3px;
+  border-radius: 15px;
+  display: grid;
+  grid-template: 'a b c' / 2fr 1fr 0.7fr;
+  animation-duration: 1s;
+  animation-name: addContact;
+}
+.userName::before {
+  content: '\2022';
+  color: inherit;
+  margin-right: 4px;
+}
+
+.usertel {
+  margin-right: 10px;
+}
+
+@keyframes addContact {
+  from {
+    background-color: silver;
+  }
+
+  to {
+    background-color: white;
+  }
+}
