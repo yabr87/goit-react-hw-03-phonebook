@@ -4,16 +4,34 @@ import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 
+import { setLocalStorage, getLocalStorage } from './utils/storage';
+// import { testItems } from './data/testItems';
+
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const contacts = getLocalStorage('myContacts');
+    if (contacts?.length) {
+      // contacts && contacts.length
+      this.setState({ contacts });
+      console.log('Load contacts');
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log("componentDidUpdate")
+    // console.log("prevState", prevState);
+    // console.log("currentState", this.state);
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      console.log('Update contacts');
+      setLocalStorage('myContacts', contacts);
+    }
+  }
 
   alertError = userName => {
     alert(`${userName} is already in contacts!`);
@@ -25,6 +43,8 @@ class App extends Component {
   };
 
   addContacts = (userName, userTel) => {
+    const formattedUserTel = this.formatUserTel(userTel);
+
     if (this.checkNameInPhonebook(userName)) {
       this.alertError(userName);
       return;
@@ -36,13 +56,23 @@ class App extends Component {
           {
             id: nanoid(4),
             name: userName,
-            number: userTel,
+            number: formattedUserTel,
           },
           ...prevState.contacts,
         ],
       };
     });
   };
+
+  formatUserTel(userTel) {
+    // const tel = userTel.match(/\d/g);
+    const tel = userTel.split('');
+    // tel.splice(0, '', '+380 (');
+    tel.splice(3, '', '-');
+    tel.splice(6, '', '-');
+    tel.splice(9, '', '-');
+    return tel.join('');
+  }
 
   deleteContacts = id => {
     this.setState(prevState => {

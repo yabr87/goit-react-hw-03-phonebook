@@ -33,8 +33,10 @@ const ContactForm = ({ addContacts }) => {
         id="contactsTel"
         type="tel"
         name="number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+        pattern="\d*"
+        title="The phone number must be ten digits. e.g. 0970066415"
+        minLength="10"
+        maxLength="10"
         required
       />
 
